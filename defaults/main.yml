@@ -6,3 +6,11 @@ borg_path: /srv/{{ borg_user }}
 borg_repo: https://github.com/borgbackup/borg.git
 borg_version: master
 borg_repo_update: true
+
+borgweb_path: /srv/{{ borg_user }}/borgweb
+borgweb_repo: https://github.com/borgbackup/borgweb.git
+borgweb_version: master
+borgweb_repo_update: true
+
+borg_env:
+  PATH: '{{ borg_path }}/n/bin:{{ ansible_env.PATH }}'
