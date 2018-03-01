@@ -6,6 +6,8 @@
     state: present
     update_cache: true
   with_items:
+    - git
+    - acl
     - python3
     - python3-dev
     - python3-pip
@@ -18,7 +20,22 @@
     - libfuse-dev
     - fuse
     - pkg-config
-    - acl
 
 - name: Ensure Borg user exists
   user: name='{{ borg_user }}'
+
+- name: Ensure Borg directory exists
+  file:
+    path: '{{ borg_path }}'
+    state: directory
+    owner: '{{ borg_user }}'
+    group: '{{ borg_user }}'
+    mode: 0755
+
+- name: Install n
+  become: true
+  become_user: '{{ borg_user }}'
+  shell: curl -L https://git.io/n-install | SHELL=/bin/bash bash -s -- -y stable
+  args:
+    creates: '/home/{{ borg_user }}/n/bin/n'
+    executable: /bin/bash
