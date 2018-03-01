@@ -1,0 +1,34 @@
+---
+
+- name: Clone the git repo for Borgweb
+  git:
+    accept_hostkey: true
+    repo: '{{ borgweb_repo }}'
+    dest: '{{ borgweb_path }}'
+    version: '{{ borgweb_version | default(omit) }}'
+    update: '{{ borgweb_repo_update | default(False) }}'
+  become: true
+  become_user: '{{ borg_user }}'
+
+- name: Install Borgweb dependencies
+  pip:
+    name: '{{ item }}'
+    chdir: '{{ borg_path }}'
+    executable: pip3
+  with_items:
+    - tox
+    - pytest
+  become: true
+  become_user: '{{ borg_user }}'
+
+- name: Install Borgweb
+  shell: 'pip3 install -e .'
+  args:
+    chdir: '{{ borgweb_path }}'
+  become: true
+  become_user: '{{ borg_user }}'
+
+- name: Install JS code and dependencies
+  environment: '{{ borg_env }}'
+  npm:
+    path: '{{ borgweb_path }}/js'
