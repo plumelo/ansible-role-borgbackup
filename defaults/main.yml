@@ -1,2 +1,8 @@
 ---
-# defaults file for ansible-role-borgbackup
+
+borg_name: borg
+borg_user: '{{ borg_name }}'
+borg_path: /srv/{{ borg_user }}
+borg_repo: https://github.com/borgbackup/borg.git
+borg_version: master
+borg_repo_update: true
