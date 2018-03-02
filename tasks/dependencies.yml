@@ -24,14 +24,6 @@
 - name: Ensure Borg user exists
   user: name='{{ borg_user }}'
 
-- name: Ensure Borg directory exists
-  file:
-    path: '{{ borg_path }}'
-    state: directory
-    owner: '{{ borg_user }}'
-    group: '{{ borg_user }}'
-    mode: 0755
-
 - name: Install n
   become: true
   become_user: '{{ borg_user }}'
