@@ -1,5 +1,13 @@
 ---
 
+- name: Ensure borgweb directory exists
+  file:
+    path: '{{ borgweb_path }}'
+    state: directory
+    owner: '{{ borg_user }}'
+    group: '{{ borg_user }}'
+    mode: 0755
+
 - name: Clone the git repo for Borgweb
   git:
     accept_hostkey: true
@@ -13,7 +21,7 @@
 - name: Install Borgweb dependencies
   pip:
     name: '{{ item }}'
-    chdir: '{{ borg_path }}'
+    chdir: '{{ borgweb_path }}'
     executable: pip3
   with_items:
     - tox
@@ -21,10 +29,14 @@
   become: true
   become_user: '{{ borg_user }}'
 
-- name: Install Borgweb
-  shell: 'pip3 install -e .'
-  args:
+- name: Install borgweb
+  pip:
     chdir: '{{ borgweb_path }}'
+    name: '.'
+    virtualenv: '{{ borg_virtual_env }}'
+    virtualenv_command: virtualenv
+    virtualenv_python: python3
+    editable: true
   become: true
   become_user: '{{ borg_user }}'
 
@@ -35,10 +47,10 @@
   become: true
   become_user: '{{ borg_user }}'
 
-- name: Ensure logs directory exists
-  file:
-    path: '{{ borg_path }}/logs'
-    state: directory
-    owner: '{{ borg_user }}'
-    group: '{{ borg_user }}'
-    mode: 0755
+# - name: Ensure logs directory exists
+#   file:
+#     path: '{{ borg_path }}/logs'
+#     state: directory
+#     owner: '{{ borg_user }}'
+#     group: '{{ borg_user }}'
+#     mode: 0755
