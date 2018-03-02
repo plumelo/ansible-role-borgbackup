@@ -13,4 +13,4 @@ borgweb_version: master
 borgweb_repo_update: true
 
 borg_env:
-  PATH: '{{ borg_path }}/n/bin:{{ ansible_env.PATH }}'
+  PATH: '/home/{{ borg_user }}/n/bin/:{{ ansible_env.PATH }}'
