@@ -2,15 +2,13 @@
 
 borg_name: borg
 borg_user: '{{ borg_name }}'
-borg_path: /srv/{{ borg_user }}
-borg_repo: https://github.com/borgbackup/borg.git
-borg_version: master
-borg_repo_update: true
+borg_virtual_env: '/home/{{ borg_user }}/.borg-env'
 
-borgweb_path: /srv/{{ borg_user }}/borgweb
+borgweb_install: true
+borgweb_path: /srv/borgweb
 borgweb_repo: https://github.com/borgbackup/borgweb.git
 borgweb_version: master
-borgweb_repo_update: true
+borgweb_repo_update: false
 
 borg_env:
   PATH: '/home/{{ borg_user }}/n/bin/:{{ ansible_env.PATH }}'
