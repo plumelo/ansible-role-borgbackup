@@ -32,3 +32,13 @@
   environment: '{{ borg_env }}'
   npm:
     path: '{{ borgweb_path }}/js'
+  become: true
+  become_user: '{{ borg_user }}'
+
+- name: Ensure logs directory exists
+  file:
+    path: '{{ borg_path }}/logs'
+    state: directory
+    owner: '{{ borg_user }}'
+    group: '{{ borg_user }}'
+    mode: 0755
