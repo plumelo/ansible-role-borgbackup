@@ -1,32 +1,26 @@
 ---
 
-- name: Clone the git repo for Borg
-  git:
-    accept_hostkey: true
-    repo: '{{ borg_repo }}'
-    dest: '{{ borg_path }}'
-    version: '{{ borg_version | default(omit) }}'
-    update: '{{ borg_repo_update | default(False) }}'
-  become: true
-  become_user: '{{ borg_user }}'
-
 - name: Ensure virtualenv directory exists
   file:
-    path: '{{ borg_path }}/borg-env'
+    path: '{{ borg_virtual_env }}'
     state: directory
   become: true
   become_user: '{{ borg_user }}'
 
-- name: Install requirements
+- name: Install borg
   pip:
-    chdir: '{{ borg_path }}'
-    virtualenv: '{{ borg_path }}/borg-env'
+    name: borgbackup[fuse]
+    virtualenv: '{{ borg_virtual_env }}'
     virtualenv_command: virtualenv
-    requirements: '{{ item }}'
     virtualenv_python: python3
-  with_items:
-    - requirements.d/development.txt
-    - requirements.d/docs.txt
-    - requirements.d/fuse.txt
+  become: true
+  become_user: '{{ borg_user }}'
+
+- name: Install borgweb
+  pip:
+    name: borgweb
+    virtualenv: '{{ borg_virtual_env }}'
+    virtualenv_command: virtualenv
+    virtualenv_python: python3
   become: true
   become_user: '{{ borg_user }}'
