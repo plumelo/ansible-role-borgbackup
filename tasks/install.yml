@@ -15,12 +15,3 @@
     virtualenv_python: python3
   become: true
   become_user: '{{ borg_user }}'
-
-- name: Install borgweb
-  pip:
-    name: borgweb
-    virtualenv: '{{ borg_virtual_env }}'
-    virtualenv_command: virtualenv
-    virtualenv_python: python3
-  become: true
-  become_user: '{{ borg_user }}'
