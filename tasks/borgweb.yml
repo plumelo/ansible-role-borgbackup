@@ -1,56 +1,31 @@
 ---
 
-- name: Ensure borgweb directory exists
-  file:
-    path: '{{ borgweb_path }}'
-    state: directory
-    owner: '{{ borg_user }}'
-    group: '{{ borg_user }}'
-    mode: 0755
-
-- name: Clone the git repo for Borgweb
-  git:
-    accept_hostkey: true
-    repo: '{{ borgweb_repo }}'
-    dest: '{{ borgweb_path }}'
-    version: '{{ borgweb_version | default(omit) }}'
-    update: '{{ borgweb_repo_update | default(False) }}'
-  become: true
-  become_user: '{{ borg_user }}'
-
-- name: Install Borgweb dependencies
-  pip:
-    name: '{{ item }}'
-    chdir: '{{ borgweb_path }}'
-    executable: pip3
-  with_items:
-    - tox
-    - pytest
-  become: true
-  become_user: '{{ borg_user }}'
-
 - name: Install borgweb
   pip:
-    chdir: '{{ borgweb_path }}'
-    name: '.'
+    name: 'git+{{ borgweb_repo }}'
     virtualenv: '{{ borg_virtual_env }}'
     virtualenv_command: virtualenv
     virtualenv_python: python3
-    editable: true
   become: true
   become_user: '{{ borg_user }}'
 
-- name: Install JS code and dependencies
-  environment: '{{ borg_env }}'
-  npm:
-    path: '{{ borgweb_path }}/js'
+- name: Ensure borg backup directory exists
+  file:
+    path: '{{ borg_virtual_env }}/repo'
+    state: directory
   become: true
   become_user: '{{ borg_user }}'
 
-# - name: Ensure logs directory exists
-#   file:
-#     path: '{{ borg_path }}/logs'
-#     state: directory
-#     owner: '{{ borg_user }}'
-#     group: '{{ borg_user }}'
-#     mode: 0755
+- name: Ensure borg logs directory exists
+  file:
+    path: '{{ borg_virtual_env }}/logs'
+    state: directory
+  become: true
+  become_user: '{{ borg_user }}'
+
+- name: Configuration env for borgweb
+  template:
+    src: borgweb.cfg.j2
+    dest: '/home/{{ borg_user }}/borgweb.cfg'
+  become: true
+  become_user: '{{ borg_user }}'
