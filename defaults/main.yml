@@ -2,16 +2,23 @@
 
 borg_name: borg
 borg_user: '{{ borg_name }}'
+borg_working_dir: '/home/{{ borg_user }}'
 borg_virtual_env: '/home/{{ borg_user }}/.borg-env'
+borg_backup: repo
+borg_encryption: none
 
 borgweb_install: true
 borgweb_repo: https://github.com/borgbackup/borgweb.git
 borgweb_version: master
 borgweb_repo_update: false
-borgweb_config_file: /home/{{ borg_user }}/borgweb.cfg
+borgweb_config_file: '/home/{{ borg_user }}/borgweb.cfg'
 borgweb_config:
   HOST: "'0.0.0.0'"
   PORT: '5000'
+  DEBUG: 'True'
+  LOG_DIR: "'/home/{{ borg_user }}/logs'"
+  REPOSITORY: "'/home/{{ borg_user }}/{{ borg_backup }}'"
+  BACKUP_CMD: '"{{ borg_virtual_env }}/bin/borg create --list --stats --info --show-version --show-rc {REPOSITORY}::{NAME}-{LOCALTIME} /home/{{ borg_user }}/test >{LOG_DIR}/{NAME}-{LOCALTIME} 2>&1 </dev/null"'
 
 borg_env:
   PATH: '/home/{{ borg_user }}/n/bin/:{{ ansible_env.PATH }}'
