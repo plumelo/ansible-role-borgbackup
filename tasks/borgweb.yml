@@ -9,13 +9,6 @@
   become: true
   become_user: '{{ borg_user }}'
 
-- name: Ensure borg backup directory exists
-  file:
-    path: '/home/{{ borg_user }}'
-    state: directory
-  become: true
-  become_user: '{{ borg_user }}'
-
 - name: Ensure borg logs directory exists
   file:
     path: '/home/{{ borg_user }}'
