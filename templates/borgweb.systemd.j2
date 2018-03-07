@@ -5,8 +5,10 @@ Wants=borgweb.service
 Before=borgweb.service
 
 [Service]
-ExecStart={{ borg_virtual_env }}/bin/borgweb
+Type=simple
 Environment = "BORGWEB_CONFIG={{ borgweb_config_file }}"
+ExecStart={{ borg_virtual_env }}/bin/borgweb
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
