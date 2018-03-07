@@ -15,3 +15,14 @@
     virtualenv_python: python3
   become: true
   become_user: '{{ borg_user }}'
+
+- name: Borg init create backup repo
+  shell: >
+    ./bin/borg init -e {{ borg_encryption }}
+    /home/{{ borg_user }}/{{ borg_backup }}
+  args:
+    chdir: '{{ borg_virtual_env }}'
+    executable: /bin/bash
+    creates: '/home/{{ borg_user }}/{{ borg_backup }}/README'
+  become: true
+  become_user: '{{ borg_user }}'
