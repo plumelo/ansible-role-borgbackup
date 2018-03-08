@@ -1,2 +1,2 @@
-autocmd BufReadPre,BufRead *.yml set filetype=ansible
-autocmd BufReadPre,BufRead *.j2 set filetype=ansible_template
+autocmd BufReadPre,BufRead *.yml setlocal filetype=ansible
+autocmd BufReadPre,BufRead *.j2 setlocal filetype=ansible_template
