@@ -11,7 +11,7 @@
 
 - name: Ensure borg logs directory exists
   file:
-    path: '/home/{{ borg_user }}'
+    path: '/home/{{ borg_user }}/logs'
     state: directory
   become: true
   become_user: '{{ borg_user }}'
