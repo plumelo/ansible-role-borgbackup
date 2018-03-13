@@ -6,3 +6,5 @@ borg_working_dir: '/home/{{ borg_user }}'
 borg_virtual_env: '/home/{{ borg_user }}/.borg-env'
 borg_backup: repo
 borg_encryption: none
+
+borgmatic_config_dir: '{{ borg_working_dir }}/borgmatic.d'
