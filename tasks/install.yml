@@ -16,7 +16,7 @@
   become: true
   become_user: '{{ borg_user }}'
 
-- name: Borg init create backup repo
+- name: Borg init backup repo
   shell: >
     ./bin/borg init -e {{ borg_encryption }}
     /home/{{ borg_user }}/{{ borg_backup }}
