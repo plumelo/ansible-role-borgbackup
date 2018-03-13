@@ -23,11 +23,3 @@
 
 - name: Ensure Borg user exists
   user: name='{{ borg_user }}'
-
-- name: Install n
-  become: true
-  become_user: '{{ borg_user }}'
-  shell: curl -L https://git.io/n-install | SHELL=/bin/bash bash -s -- -y stable
-  args:
-    creates: '/home/{{ borg_user }}/n/bin/n'
-    executable: /bin/bash
