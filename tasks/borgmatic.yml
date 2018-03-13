@@ -6,13 +6,26 @@
     virtualenv: '{{ borg_virtual_env }}'
     virtualenv_command: virtualenv
     virtualenv_python: python3
+  become: true
+  become_user: '{{ borg_user }}'
 
 - name: Ensure borgmatic config directory exists
   file:
-    path: /etc/bormatic.d
+    path: '{{ borgmatic_config_dir }}'
     state: directory
+  become: true
+  become_user: '{{ borg_user }}'
 
 - name: Create borgmatic config file
   file:
-    path: '/etc/borgmatic.d/app.yaml'
+    path: '{{ borgmatic_config_dir }}/app.yaml'
     state: touch
+  become: true
+  become_user: '{{ borg_user }}'
+
+- name: Cron job
+  cron:
+    name: 'borgmatic'
+    user: '{{ borg_user }}'
+    minute: '1'
+    job: '{{ borg_virtual_env }}/bin/borgmatic'
