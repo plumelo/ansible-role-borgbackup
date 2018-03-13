@@ -22,4 +22,5 @@
     - pkg-config
 
 - name: Ensure Borg user exists
-  user: name='{{ borg_user }}'
+  user:
+    name: '{{ borg_user }}'
