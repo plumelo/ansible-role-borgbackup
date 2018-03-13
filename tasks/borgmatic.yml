@@ -1,0 +1,18 @@
+---
+
+- name: Install borgmatic
+  pip:
+    name: borgmatic
+    virtualenv: '{{ borg_virtual_env }}'
+    virtualenv_command: virtualenv
+    virtualenv_python: python3
+
+- name: Ensure borgmatic config directory exists
+  file:
+    path: /etc/bormatic.d
+    state: directory
+
+- name: Create borgmatic config file
+  file:
+    path: '/etc/borgmatic.d/app.yaml'
+    state: touch
