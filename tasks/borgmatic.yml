@@ -30,7 +30,6 @@
     path: '{{ item.1 }}'
     entity: '{{ borg_user }}'
     permissions: r
-    recursive: true
     etype: user
     state: present
   with_subelements:
