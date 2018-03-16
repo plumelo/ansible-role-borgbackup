@@ -17,15 +17,22 @@
   become_user: '{{ borg_user }}'
 
 - name: Create borgmatic config file
-  file:
-    path: '{{ borgmatic_config_dir }}/app.yaml'
-    state: touch
+  template:
+    src: app.yaml.j2
+    dest: '{{ borgmatic_config_dir }}/app_{{ item.name }}.yaml'
+  with_items:
+    - '{{ borgmatic_configs }}'
   become: true
   become_user: '{{ borg_user }}'
 
 - name: Cron job
   cron:
-    name: 'borgmatic'
+    name: '{{ item.name }}'
     user: '{{ borg_user }}'
-    minute: '1'
-    job: '{{ borg_virtual_env }}/bin/borgmatic'
+    minute: '*'
+    # yamllint disable-line rule:line-length
+    job: 'PATH={{ borg_virtual_env }}/bin:$PATH {{ borg_virtual_env }}/bin/borgmatic -c {{ borgmatic_config_dir }}/app_{{ item.name }}.yaml -v 2 >> /home/{{ borg_user }}/cron.log 2>&1'
+  with_items:
+    - '{{ borgmatic_configs }}'
+  become: true
+  become_user: '{{ borg_user }}'
