@@ -17,9 +17,8 @@
   become_user: '{{ borg_user }}'
 
 - name: Borg init backup repo
-  shell: >
-    ./bin/borg init -e {{ borg_encryption }}
-    /home/{{ borg_user }}/{{ borg_backup }}
+  # yamllint disable-line rule:line-length
+  shell: ./bin/borg init -e {{ borg_encryption }} /home/{{ borg_user }}/{{ borg_backup }}
   args:
     chdir: '{{ borg_virtual_env }}'
     executable: /bin/bash
