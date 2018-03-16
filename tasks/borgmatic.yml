@@ -25,6 +25,31 @@
   become: true
   become_user: '{{ borg_user }}'
 
+- name: Set acl to allow user to read locations
+  acl:
+    path: '{{ item.1 }}'
+    entity: '{{ borg_user }}'
+    permissions: r
+    recursive: true
+    etype: user
+    state: present
+  with_subelements:
+    - '{{ borgmatic_configs }}'
+    - 'config.location.source_directories'
+
+- name: Set acl default to allow user to read locations
+  acl:
+    path: '{{ item.1 }}'
+    entity: '{{ borg_user }}'
+    permissions: r
+    default: true
+    recursive: true
+    etype: user
+    state: present
+  with_subelements:
+    - '{{ borgmatic_configs }}'
+    - 'config.location.source_directories'
+
 - name: Cron job
   cron:
     name: '{{ item.name }}'
