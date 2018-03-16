@@ -20,7 +20,3 @@
     - libfuse-dev
     - fuse
     - pkg-config
-
-- name: Ensure Borg user exists
-  user:
-    name: '{{ borg_user }}'
