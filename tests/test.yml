@@ -4,3 +4,24 @@
   become: true
   roles:
     - role: plumelo.borg
+      borgmatic_configs:
+        - name: db
+          config:
+            location:
+              source_directories:
+                - /home/borg
+              repositories:
+                - /home/borg/repo
+            retention:
+              keep_daily: 7
+              keep_weekly: 4
+              keep_monthly: 6
+        - name: src
+          config:
+            location:
+              source_directories:
+                - /home/borg/.config
+              repositories:
+                - /home/borg/repo
+            retention:
+              keep_minutely: 1
