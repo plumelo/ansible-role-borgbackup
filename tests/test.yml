@@ -6,6 +6,8 @@
     - role: plumelo.borg
       borgmatic_configs:
         - name: db
+          repo: repo
+          minute: '*'
           config:
             location:
               source_directories:
@@ -17,11 +19,13 @@
               keep_weekly: 4
               keep_monthly: 6
         - name: src
+          repo: repo1
+          minute: '*'
           config:
             location:
               source_directories:
-                - /home/borg/.config
+                - /var/log/syslog
               repositories:
-                - /home/borg/repo
+                - /home/borg/repo1
             retention:
               keep_minutely: 1
