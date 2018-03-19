@@ -3,7 +3,6 @@
 borg_name: borg
 borg_user: '{{ borg_name }}'
 borg_virtual_env: '/home/{{ borg_user }}/.borg-env'
-borg_backup: repo
 borg_encryption: none
 
 borgmatic_config_dir: '/home/{{ borg_user }}/borgmatic.d'
