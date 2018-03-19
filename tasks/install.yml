@@ -18,10 +18,12 @@
 
 - name: Borg init backup repo
   # yamllint disable-line rule:line-length
-  shell: ./bin/borg init -e {{ borg_encryption }} /home/{{ borg_user }}/{{ borg_backup }}
+  shell: ./bin/borg init -e '{{ borg_encryption }}' /home/{{ borg_user }}/{{ item.repo }}
   args:
     chdir: '{{ borg_virtual_env }}'
     executable: /bin/bash
-    creates: '/home/{{ borg_user }}/{{ borg_backup }}/README'
+    creates: '/home/{{ borg_user }}/{{ item.repo }}/README'
+  with_items:
+    - '{{ borgmatic_configs }}'
   become: true
   become_user: '{{ borg_user }}'
