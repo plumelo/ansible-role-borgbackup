@@ -53,7 +53,10 @@
   cron:
     name: '{{ item.name }}'
     user: '{{ borg_user }}'
-    minute: '*'
+    minute: '{{ item.minute | default(omit) }}'
+    hour: '{{ item.hour | default(omit) }}'
+    weekday: '{{ item.weekday | default(omit) }}'
+    month: '{{ item.month | default(omit) }}'
     # yamllint disable-line rule:line-length
     job: 'PATH={{ borg_virtual_env }}/bin:$PATH {{ borg_virtual_env }}/bin/borgmatic -c {{ borgmatic_config_dir }}/app_{{ item.name }}.yaml -v 2 >> /home/{{ borg_user }}/cron.log 2>&1'
   with_items:
